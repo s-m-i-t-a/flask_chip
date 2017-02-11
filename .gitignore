@@ -60,3 +60,26 @@ target/
 
 # pyenv python configuration file
 .python-version
+
+# Env
+.envs
+.env
+
+# tags
+TAGS
+TAGS.new
+tags
+tags.new
+ID
+ID.new
+
+# Backup
+*~
+
+tmp/
+
+.DS_Store
+.cache
+.mypy_cache
+
+.vimrc
