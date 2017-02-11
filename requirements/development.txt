@@ -1,0 +1,28 @@
+-r production.txt
+
+bumpversion
+watchdog
+cryptography
+PyYAML
+coverage
+pep8
+pylint
+flake8
+pyflakes
+mccabe
+splinter
+ipython
+# selenium
+# factory_boy
+pytest
+pytest-cov
+tox
+coveralls
+mock
+
+# docs
+Sphinx==1.4.8
+
+# static type checking
+mypy-lang
+typed-ast
