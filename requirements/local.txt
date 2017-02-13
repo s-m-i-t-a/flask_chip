@@ -1,0 +1,6 @@
+-r development.txt
+
+# static type checking
+mypy-lang
+typed-ast
+
