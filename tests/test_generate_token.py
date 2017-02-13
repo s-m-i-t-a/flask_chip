@@ -1,34 +1,30 @@
 # -*- coding: utf-8 -*-
 
-import pytest
+import pytest  # type: ignore
 import six
-
-if six.PY3:
-    from unittest.mock import Mock, call, patch, sentinel
-else:
-    from mock import Mock, call, patch, sentinel
 
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
-from pages.tests.factories import UserFactory
-from auth import generate_token
+from flask_chip.tokens import generate
 
 
-class SpecGenerateToken(object):
+@pytest.fixture
+def key():
+    return 'secretkey'
 
-    @pytest.mark.usefixtures("db")
-    def should_generated_token_is_string(self):
-        user = UserFactory()
-        token = generate_token(user)
 
-        assert isinstance(token, six.string_types)
+def test_generated_token_is_string(key):
+    data = {'foo': ['bar', 'baz']}
+    token = generate(data, key)
 
-    @pytest.mark.usefixtures("db")
-    def should_generated_token_contains_usrer_id(self, app):
-        user = UserFactory()
-        token = generate_token(user)
+    assert isinstance(token, six.string_types)
 
-        s = Serializer(app.config['SECRET_KEY'])
-        data = s.loads(token)
 
-        assert data['id'] == str(user.id)
+def test_generated_token_contains_usrer_id(key):
+    data = {'foo': ['bar', 'baz']}
+    token = generate(data, key)
+
+    s = Serializer(key)
+    result = s.loads(token)
+
+    assert result == data

@@ -1,43 +1,47 @@
 # -*- coding: utf-8 -*-
 
-import pytest
-import six
+import pytest  # type: ignore
 import time
 
-if six.PY3:
-    from unittest.mock import Mock, call, patch, sentinel
-else:
-    from mock import Mock, call, patch, sentinel
-
-from pages.tests.factories import UserFactory
-from auth import generate_token, verify_token
+from flask_chip.tokens import generate, verify
 
 
-class SpecVerifyToken(object):
+@pytest.fixture
+def key():
+    return 'secretkey'
 
-    @pytest.mark.usefixtures("db")
-    def should_return_stored_data_when_token_is_right(self):
-        user = UserFactory()
-        token = generate_token(user)
 
-        data = verify_token(token)
+@pytest.fixture
+def data():
+    return {'foo': ['bar', 'baz']}
 
-        assert data is not None
-        assert data['id'] == str(user.id)
 
-    @pytest.mark.usefixtures("db")
-    def should_return_none_when_token_expire(self, app):
-        user = UserFactory()
-        token = generate_token(user, 0)
+@pytest.fixture
+def token(data, key):
+    return generate(data, key)
 
-        time.sleep(1)
 
-        data = verify_token(token)
+@pytest.fixture
+def expired_token(data, key):
+    return generate(data, key, 0)
 
-        assert data is None
 
-    @pytest.mark.usefixtures("db")
-    def should_return_none_when_token_is_wrong(self, app):
-        data = verify_token('')
+def test_return_stored_data_when_token_is_right(data, key, token):
+    result = verify(token, key)
 
-        assert data is None
+    assert result is not None
+    assert result == data
+
+
+def test_return_none_when_token_expire(data, key, expired_token):
+    time.sleep(1)
+
+    result = verify(expired_token, key)
+
+    assert result is None
+
+
+def test_return_none_when_token_is_wrong(data, key):
+    result = verify('', key)
+
+    assert result is None
