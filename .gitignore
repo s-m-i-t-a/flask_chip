@@ -80,6 +80,10 @@ tmp/
 
 .DS_Store
 .cache
-.mypy_cache
 
 .vimrc
+
+# mypy
+.mypy_cache
+out
+stubs
