@@ -22,7 +22,6 @@ deploy:
     repo: s-m-i-t-a/flask_chip
     tags: true
 env:
-- TOXENV=py36
 - TOXENV=py35
 - TOXENV=py34
 - TOXENV=py33
