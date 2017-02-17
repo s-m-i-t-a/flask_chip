@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import json
 
-from flask import Response
+from typing import Any  # noqa
+
+from flask import Response, g
 
 
 def unauthorized():
@@ -15,3 +17,14 @@ def unauthorized():
         data['status'],
         {'content-type': 'application/json'}
     )
+
+
+def save_user(user):
+    # type: (Any) -> Any
+    '''Save user to the flask global object.
+
+    :param user: currently logged user
+    :returns: user
+    '''
+    g.user = user
+    return user

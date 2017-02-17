@@ -1,38 +1,44 @@
 # -*- coding: utf-8 -*-
-from functools import wraps
+from functools import wraps, partial
 
-from flask import request, g
-from flask_musers.models import User
+from flask import request, current_app as app
+from toolz import pipe
 
-from auth import unauthorized, verify_token as verify
+from .utils import save_user, unauthorized
+from .tokens import verify as verify_token
 
 
-def user_from_token(callback=None):
+def verify(f, pipeline, on_none):
+    '''Run given pipeline, when result is not None run decorated function
+    otherwise run on_none function
+
+    :param f: guarded function
+    :param pipline: token proccesing pipeline
+    :param on_none: function called when pipeline result is None
+    :returns: function
     '''
-    Set put user to flask.g.
+    @wraps(f)
+    def _verify(*args, **kwargs):
+        result = pipe(*pipeline)
+        return f(*args, **kwargs) if result is not None else on_none()
 
-    callback -- None or function called when user or token not found
+    return _verify
 
-    If callback is None, then function set g.user to None.
+
+def create_verify_user(get_user, header_key='X-Auth-Token', on_none=unauthorized):
+    '''Create user verify decorator.
+
+    :param get_user: function that returns user object based on data from the token
+    :param header_key: token header field name
+    :param on_none: function called when pipeline result is None
+    :returns: user verify decorator
     '''
+    pipeline = (
+        header_key,
+        lambda key: request.headers.get(key, ''),
+        lambda token: verify_token(token, app.config['SECRET_KEY']),
+        get_user,
+        save_user,
+    )
 
-    def verify_token(f):
-        @wraps(f)
-        def _verify_token(*args, **kwargs):
-            data = verify(request.headers.get('X-Auth-Token', ''))
-            if data is None:
-                g.user = None
-            else:
-                g.user = User.get_active_user_by_pk_or_none(data['id'])
-
-            if g.user is None and callback is not None:
-                return callback()
-
-            return f(*args, **kwargs)
-        return _verify_token
-
-    return verify_token
-
-
-verify_token = user_from_token(unauthorized)
-logged_user = user_from_token()
+    return partial(verify, pipeline=pipeline, on_none=on_none)
