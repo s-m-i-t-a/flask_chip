@@ -1,6 +1,6 @@
 -r production.txt
 
-bumpversion
+bumpversion==0.5.3
 watchdog
 cryptography
 PyYAML
