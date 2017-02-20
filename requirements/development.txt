@@ -1,7 +1,7 @@
 -r production.txt
 
 bumpversion==0.5.3
-watchdog
+watchdog==0.8.3
 cryptography
 PyYAML
 coverage
