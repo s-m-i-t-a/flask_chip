@@ -15,7 +15,7 @@ ipython==5.2.2
 # selenium
 # factory_boy
 pytest==3.0.6
-pytest-cov
+pytest-cov==2.4.0
 tox
 coveralls
 mock
