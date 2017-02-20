@@ -1,6 +1,6 @@
 -r development.txt
 
 # static type checking
-mypy-lang
+mypy-lang==0.4.6
 typed-ast
 
