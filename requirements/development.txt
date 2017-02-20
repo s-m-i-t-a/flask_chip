@@ -16,7 +16,7 @@ ipython==5.2.2
 # factory_boy
 pytest==3.0.6
 pytest-cov==2.4.0
-tox
+tox==2.6.0
 coveralls
 mock
 
