@@ -2,5 +2,5 @@
 
 # static type checking
 mypy-lang==0.4.6
-typed-ast
+typed-ast==1.0.1
 
