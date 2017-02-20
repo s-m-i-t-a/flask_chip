@@ -42,3 +42,21 @@ def create_verify_user(get_user, header_key='X-Auth-Token', on_none=unauthorized
     )
 
     return partial(verify, pipeline=pipeline, on_none=on_none)
+
+
+def create_verify_single_use_token(exists_and_remove, header_key='X-Single-Use-Token', on_none=unauthorized):
+    '''Create one-time-access token verify decorator
+
+    :param exists_and_remove: function that return key when exists in store and remove it
+    :param header_key: token header field name
+    :param on_none: function called when pipeline result is None
+    :returns: token exists decorator
+    '''
+    pipeline = (
+        header_key,
+        lambda key: request.headers.get(key, ''),
+        exists_and_remove,
+        lambda token: verify_token(token, app.config['SECRET_KEY']),
+    )
+
+    return partial(verify, pipeline=pipeline, on_none=on_none)

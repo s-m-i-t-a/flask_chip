@@ -17,7 +17,7 @@ def verify(token, key):
     s = Serializer(key)
     try:
         data = s.loads(token)
-    except (SignatureExpired, BadSignature):
+    except (SignatureExpired, BadSignature, TypeError):
         return None
 
     return data
