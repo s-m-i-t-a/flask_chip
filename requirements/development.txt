@@ -6,7 +6,7 @@ cryptography==1.7.2
 PyYAML==3.12
 coverage==4.3.4
 pep8==1.7.0
-pylint
+pylint==1.6.5
 flake8
 pyflakes
 mccabe
