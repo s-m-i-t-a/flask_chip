@@ -1,27 +1,27 @@
 -r production.txt
 
-bumpversion
-watchdog
-cryptography
-PyYAML
-coverage
-pep8
-pylint
-flake8
-pyflakes
-mccabe
-splinter
-ipython
+bumpversion==0.5.3
+watchdog==0.8.3
+cryptography==1.7.2
+PyYAML==3.12
+coverage==4.3.4
+pep8==1.7.0
+pylint==1.6.5
+flake8==3.3.0
+pyflakes==1.5.0
+mccabe==0.6.1
+splinter==0.7.5
+ipython==5.2.2
 # selenium
 # factory_boy
-pytest
-pytest-cov
-tox
-coveralls
-mock
+pytest==3.0.6
+pytest-cov==2.4.0
+tox==2.6.0
+coveralls==1.1
+mock==2.0.0
 
 # docs
-Sphinx==1.4.8
+Sphinx==1.5.2
 
 # mypy
-typing
+typing==3.5.3.0
