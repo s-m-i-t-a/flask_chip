@@ -8,7 +8,7 @@ coverage==4.3.4
 pep8==1.7.0
 pylint==1.6.5
 flake8==3.3.0
-pyflakes
+pyflakes==1.5.0
 mccabe
 splinter
 ipython
