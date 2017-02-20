@@ -14,7 +14,7 @@ splinter==0.7.5
 ipython==5.2.2
 # selenium
 # factory_boy
-pytest
+pytest==3.0.6
 pytest-cov
 tox
 coveralls
