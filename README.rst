@@ -14,8 +14,12 @@ Flask Chip
         :alt: Documentation Status
 
 .. image:: https://pyup.io/repos/github/s-m-i-t-a/flask_chip/shield.svg
-     :target: https://pyup.io/repos/github/s-m-i-t-a/flask_chip/
-     :alt: Updates
+        :target: https://pyup.io/repos/github/s-m-i-t-a/flask_chip/
+        :alt: Updates
+
+.. image:: https://coveralls.io/repos/github/s-m-i-t-a/flask_chip/badge.svg?branch=master
+        :target: https://coveralls.io/github/s-m-i-t-a/flask_chip?branch=master
+
 
 
 A token generator for Flask apps.
