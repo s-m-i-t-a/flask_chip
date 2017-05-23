@@ -29,7 +29,7 @@ test_requirements = [
 
 setup(
     name='flask_chip',
-    version='0.1.1',
+    version='0.1.2',
     description="A token generator for Flask apps.",
     long_description=readme + '\n\n' + history,
     author="Jindrich K. Smitka",
