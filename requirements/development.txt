@@ -23,4 +23,4 @@ mock==2.0.0
 Sphinx==1.6.2
 
 # mypy
-typing==3.6.1
+typing==3.6.2
