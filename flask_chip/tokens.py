@@ -3,7 +3,7 @@
 Generate token and verify
 '''
 
-from datetime import datetime
+from time import time
 from itsdangerous import (
     SignatureExpired,
     BadSignature,
@@ -16,14 +16,15 @@ from toolz import pipe
 def generate(data, key, **kwargs):
     ''' Generate JWT token with supplied data
 
-    >>> from flask_chip.tokens import generate
+    **Examples**
+
+    >>> from flask_chip.tokens import generate, verify
 
     >>> key = "y):'QGE8M-b+MEKl@k4e<;*9.BqL=@~B"
     >>> data = {'foo': 1234}
-    >>> generate(data, key, iat=1516788472)
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.\
-eyJkYXRhIjp7ImZvbyI6MTIzNH0sImlhdCI6MTUxNjc4ODQ3MiwiZXhwIjoxNTE2ODc0ODcyfQ.\
-TPuT1svUpzXa5GlU3HtuSZm6-Dy9vlX3HOxpM53iyrY'
+    >>> token = generate(data, key)
+    >>> verify(token, key)
+    Result(status='Ok', value={'foo': 1234})
     '''
     iat = kwargs.get('iat', _now())
     exp = kwargs.get('exp', 24 * 60 * 60)
@@ -46,7 +47,7 @@ def verify(token, key):
     :param key: decryption key
     :returns: result with data
 
-    ## Examples
+    **Examples**
 
     returns data if token is valid
 
@@ -71,9 +72,9 @@ def verify(token, key):
 
     returns time travele error
 
-    >>> from datetime import datetime
+    >>> from time import time
 
-    >>> iat = round(datetime.timestamp(datetime.utcnow())) + 3600
+    >>> iat = time() + 3600
     >>> key = "y):'QGE8M-b+MEKl@k4e<;*9.BqL=@~B"
     >>> data = {'foo': 1234}
     >>> token = generate(data, key=key, iat=iat)
@@ -110,7 +111,7 @@ def to_value(res):
     :param res: result
     :returns: value or None
 
-    ## Examples
+    **Examples**
 
     >>> from pyresult import ok, error
     >>> from flask_chip.tokens import to_value
@@ -142,7 +143,7 @@ def _expires_in(issued_at, expires_in):
 
 
 def _now():
-    return round(datetime.timestamp(datetime.utcnow()))
+    return round(time())
 
 
 def _expired(data):
