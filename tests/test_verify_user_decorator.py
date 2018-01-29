@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=missing-docstring,redefined-outer-name,invalid-name
 
 import json
 import pytest
@@ -26,19 +27,19 @@ def token(data, config):
 
 
 @pytest.fixture
-def resource(app, data):
+def resource(app):
 
     class TestAPI(MethodView):
         @verify_user
-        def get(self):
-            return jsonify(data=g.user), http.OK
+        def get(self):  # pylint: disable=no-self-use
+            return jsonify(data=g.user), http.OK  # pylint: disable=no-member
 
     app.add_url_rule('/test', view_func=TestAPI.as_view('test'))
 
     return app
 
 
-def test_returns_status_ok(client, data, resource, token):
+def test_returns_status_ok(client, data, resource, token):  # pylint: disable=unused-argument
     response = client.get(
         '/test',
         content_type='application/json',
@@ -49,11 +50,11 @@ def test_returns_status_ok(client, data, resource, token):
 
     response_data = json.loads(response.get_data(as_text=True))
 
-    assert response.status_code == http.OK
+    assert response.status_code == http.OK  # pylint: disable=no-member
     assert response_data['data'] == data
 
 
-def test_returns_unauthorized(client, resource):
+def test_returns_unauthorized(client, resource):  # pylint: disable=unused-argument
     rv = client.get(
         '/test',
         content_type='application/json',
@@ -64,6 +65,6 @@ def test_returns_unauthorized(client, resource):
 
     response_data = json.loads(rv.get_data(as_text=True))
 
-    assert rv.status_code == http.UNAUTHORIZED
+    assert rv.status_code == http.UNAUTHORIZED  # pylint: disable=no-member
     assert response_data['message'] == 'Unauthorized'
-    assert response_data['status'] == http.UNAUTHORIZED
+    assert response_data['status'] == http.UNAUTHORIZED  # pylint: disable=no-member
