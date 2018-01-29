@@ -16,6 +16,7 @@ requirements = [
     'blinker>=1.3',
     'six>=1.7.3',
     'toolz>=0.8.2',
+    'pyresult>=1.0.1',
 ]
 
 test_requirements = [
