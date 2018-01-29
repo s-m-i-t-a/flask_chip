@@ -9,11 +9,8 @@ from itsdangerous import (
     BadSignature,
     JSONWebSignatureSerializer as Serializer
 )
-from pyresult import ok, error, rmap, and_then
+from pyresult import ok, error, rmap, and_then, with_default
 from toolz import pipe
-
-
-EPOCH = datetime(1970, 1, 1)
 
 
 def generate(data, key, **kwargs):
@@ -53,7 +50,7 @@ def verify(token, key):
 
     returns data if token is valid
 
-    >>> from flask_chip.tokens import generate
+    >>> from flask_chip.tokens import generate, verify
 
     >>> key = "y):'QGE8M-b+MEKl@k4e<;*9.BqL=@~B"
     >>> data = {'foo': 1234}
@@ -104,6 +101,31 @@ def verify(token, key):
         )
     except (SignatureExpired, BadSignature, TypeError):
         return error('invalid JWT')
+
+
+def to_value(res):
+    ''' Transform result to `value`,
+    if result is `Ok` or `None` in case of `Error`
+
+    :param res: result
+    :returns: value or None
+
+    ## Examples
+
+    >>> from pyresult import ok, error
+    >>> from flask_chip.tokens import to_value
+
+    returns value if ok
+
+    >>> to_value(ok(12345))
+    12345
+
+    returns None if error
+
+    >>> to_value(error('Foo bar baz')) is None
+    True
+    '''
+    return with_default(None, res)
 
 
 def _expires_in(issued_at, expires_in):
