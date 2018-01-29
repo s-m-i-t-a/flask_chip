@@ -56,7 +56,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Flask Chip'
-copyright = u"2017, Jindrich K. Smitka"
+copyright = u"2018, Jindrich K. Smitka"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -86,7 +86,7 @@ exclude_patterns = ['_build']
 #default_role = None
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
-#add_function_parentheses = True
+add_function_parentheses = True
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
