@@ -128,6 +128,15 @@ def to_value(res):
     return with_default(None, res)
 
 
+def verify_to_value(*args, **kwargs):
+    ''' Verify token and return `data` or `None`
+
+    For params look at :func:`verify`
+    and for return value look at :func:`to_value`.
+    '''
+    return to_value(verify(*args, **kwargs))
+
+
 def _expires_in(issued_at, expires_in):
     return issued_at + expires_in
 
