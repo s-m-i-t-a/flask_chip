@@ -13,6 +13,7 @@ from flask_chip.tokens import generate
 
 
 verify_user = create_verify_user(lambda data: data)
+verify_user_none = create_verify_user(lambda _data: None)
 
 
 @pytest.fixture
@@ -31,6 +32,19 @@ def resource(app):
 
     class TestAPI(MethodView):
         @verify_user
+        def get(self):  # pylint: disable=no-self-use
+            return jsonify(data=g.user), http.OK  # pylint: disable=no-member
+
+    app.add_url_rule('/test', view_func=TestAPI.as_view('test'))
+
+    return app
+
+
+@pytest.fixture
+def resource_with_none_user(app):
+
+    class TestAPI(MethodView):
+        @verify_user_none
         def get(self):  # pylint: disable=no-self-use
             return jsonify(data=g.user), http.OK  # pylint: disable=no-member
 
@@ -60,6 +74,22 @@ def test_returns_unauthorized(client, resource):  # pylint: disable=unused-argum
         content_type='application/json',
         headers={
             'X-Auth-Token': '',
+        }
+    )
+
+    response_data = json.loads(rv.get_data(as_text=True))
+
+    assert rv.status_code == http.UNAUTHORIZED  # pylint: disable=no-member
+    assert response_data['message'] == 'Unauthorized'
+    assert response_data['status'] == http.UNAUTHORIZED  # pylint: disable=no-member
+
+
+def test_returns_unauthorized_when_user_not_found(client, resource_with_none_user, token):  # pylint: disable=unused-argument
+    rv = client.get(
+        '/test',
+        content_type='application/json',
+        headers={
+            'X-Auth-Token': token,
         }
     )
 
