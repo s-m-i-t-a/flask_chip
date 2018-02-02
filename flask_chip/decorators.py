@@ -6,7 +6,7 @@ The decorator function for guarding flask view functions
 from functools import wraps, partial
 
 from flask import request, current_app as app
-from pyresult import is_ok, rmap
+from pyresult import is_ok, rmap, from_maybe, and_then
 from toolz import pipe
 
 from .utils import save_user, unauthorized
@@ -43,6 +43,7 @@ def create_verify_user(get_user, header_key='X-Auth-Token', on_error=unauthorize
         lambda key: request.headers.get(key, ''),
         lambda token: verify_token(token, app.config['SECRET_KEY']),
         rmap(get_user),  # pylint: disable=no-value-for-parameter
+        and_then(from_maybe('User not found.')),  # pylint: disable=no-value-for-parameter
         rmap(save_user),  # pylint: disable=no-value-for-parameter
     )
 
