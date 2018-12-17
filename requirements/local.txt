@@ -5,5 +5,5 @@ ipython==6.2.1
 
 # static type checking
 mypy-lang==0.5.0
-typed-ast==1.1.0
+typed-ast==1.1.1
 
