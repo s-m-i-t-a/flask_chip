@@ -15,7 +15,7 @@ splinter==0.7.7
 # factory_boy
 pytest-cov==2.5.1
 pytest==3.4.0
-tox==2.9.1
+tox==4.2.8
 coveralls==1.2.0
 mock==2.0.0
 
